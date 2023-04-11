@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>日期選擇和選項</title>
+    <style>
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #fff;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 標題 -->
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h1>預測交期 | 模式切換</h1>
+            </div>
+        </div>
+        <!-- 下拉選單和日期選擇器 -->
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="select1">選項1或2</label>
+                    <select class="form-control" id="select1">
+                        <option>選項1</option>
+                        <option>選項2</option>
+                        <option>選項3</option>
+                    </select>
+                    
+                </div>
+            </div>
+            <!-- 右半部分 -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="datepicker">選擇日期</label>
+                    <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY/MM/DD">
+
+                </div>
+            </div>
+        </div>
+        <!-- 下半部分 -->
+        <div class="row mt-3">
+            <!-- 上半部分 -->
+            <div class="col-md-12">
+                <h5>交期預測</h5>
+            </div>
+        </div>
+        <!-- 機台數量樹狀圖 -->
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h5>每日機台的數量</h5>
+                <div id="chart-container"></div>
+            </div>
+        </div>
+        <div id="tree"></div>
+        <script>
+            // 从数据中获取数据
+                const data = [
+                { date: "2022-01-01", count: 3 },
+                { date: "2022-01-02", count: 2 },
+                { date: "2022-01-03", count: 7 },
+                { date: "2022-01-04", count: 5 },
+                { date: "2022-01-05", count: 0 },
+                { date: "2022-01-06", count: 1 },
+                { date: "2022-01-07", count: 4 }
+                ];
+            
+                // 在 DOM 中选择节点
+                const svg = d3.select("#tree")
+                .append("svg")
+                .attr("width", 800)
+                .attr("height", 400);
+            
+                // 定义 x, y 轴比例尺
+                const x = d3.scaleBand()
+                .domain(data.map(d => d.date))
+                .range([0, 800])
+                .padding(0.1);
+            
+                const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.count)])
+                .range([400, 0]);
+            
+                // 定义 x, y 轴
+                const xAxis = d3.axisBottom(x)
+                .tickSize(0)
+                .tickPadding(10);
+            
+                const yAxis = d3.axisLeft(y)
+                .tickSize(0)
+                .tickPadding(10)
+                .tickFormat(d3.format(".0f"));
+            
+                // 添加 x, y 轴到 SVG 中
+                svg.append("g")
+                .attr("transform", "translate(0, 400)")
+                .call(xAxis)
+                .selectAll("text")
+                .attr("transform", "translate(0, 10)")
+                .attr("text-anchor", "middle")
+                .attr("fill", "#333")
+                .attr("font-size", "14px")
+                .attr("font-weight", "bold")
+                .text("日期");
+            
+                svg.append("g")
+                .call(yAxis)
+                .selectAll("text")
+                .attr("fill", "#333")
+                .attr("font-size", "14px")
+                .attr("font-weight", "bold")
+                .text("台數");
+            
+                // 添加柱状图到 SVG 中
+                svg.selectAll(".bar")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("x", d => x(d.date))
+                .attr("y", d => y(d.count))
+                .attr("width", x.bandwidth())
+                .attr("height", d => 400 - y(d.count))
+                .attr("fill", "steelblue");
+            </script>
+            
+
+        
+        <!-- 下半部分 -->
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>項目1</th>
+                            <th>項目2</th>
+                            <th>項目3</th>
+                            <th>項目2</th>
+                            <th>項目3</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                            <td>5</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>8</td>
+                            <td>9</td>
+                            <td>8</td>
+                            <td>9</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

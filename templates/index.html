@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>拖曳上傳檔案</title>
+	<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+	<style>
+		#dropzone {
+			border: 2px dashed #ccc;
+			padding: 20px;
+			margin-top: 50px;
+			text-align: center;
+			font-size: 18px;
+			font-weight: bold;
+			color: #ccc;
+		}
+		#dropzone.highlight {
+			border-color: #66ccff;
+			color: #66ccff;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">拖曳上傳檔案</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="#">分業 1</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">分業 2</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">分業 3</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">分業 3</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div id="dropzone">拖曳檔案到這裡上傳</div>
+		<div id="progress"></div>
+		<div id="message"></div>
+	</div>
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+	<script>
+		var dropzone = $('#dropzone');
+		var progress = $('#progress');
+		var message = $('#message');
+
+		// 防止瀏覽器預設的拖曳事件
+		$(document).on('dragenter', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			dropzone.addClass('highlight');
+		});
+		$(document).on('dragover', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			dropzone.addClass('highlight');
+		});
+		$(document).on('dragleave', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			dropzone.removeClass('highlight');
+		});
+
+		// 拖曳上傳檔案
+        dropzone.on('drop', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        dropzone.removeClass('highlight');
+        var files = e.originalEvent.dataTransfer.files;
+var formData = new FormData();
+for (var i = 0; i < files.length; i++) {
+	formData.append('file[]', files[i]);
+}
+
+// 透過 AJAX 上傳檔案
+$.ajax({
+	url: '/upload',
+	type: 'POST',
+	data: formData,
+	processData: false,
+	contentType: false,
+	xhr: function() {
+		var xhr = $.ajaxSettings.xhr();
+		if (xhr.upload) {
+			xhr.upload.addEventListener('progress', function(e) {
+				var percent = Math.round((e.loaded / e.total) * 100);
+				progress.html(percent + '%');
+			}, false);
+		}
+		return xhr;
+	},
+	success: function(data) {
+		message.html(data);
+	}
+});
+});
+</script>
+
+</body>
+</html>
