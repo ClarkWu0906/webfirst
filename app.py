@@ -14,10 +14,25 @@ def upload():
     file.save(filename)
     return jsonify({'result': '上傳成功', 'filename': filename})
 
-@app.route('/page2')
+@app.route('/1G-POE')
 def page2():
-    return render_template('page2.html')
+    return render_template('1G-POE.html')
 
+@app.route("/page1")
+def page1():
+    return render_template('page1.html')
+
+@app.route('/finished')
+def finished():
+    return render_template('finished.html')
+
+@app.route('/add')
+def add():
+    return render_template('add.html')
+
+@app.route('/search')
+def search():
+    return render_template('search.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=8888)

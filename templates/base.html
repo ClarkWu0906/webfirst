@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title1 %} Topbar{% endblock title1 %}</title>
+	<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    {% block head %}
+    {% endblock head %}
+</head>
+<body>
+	<div class="d-flex justify-content-center bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">拖曳上傳檔案</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/1G-POE">1G-POE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/finished">已完成訂單</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/add">訂單新增</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/search">訂單搜尋與刪除</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+	</div>
+
+	
+
+	<div class="mx-auto text-center">
+		{% block content %} {% endblock content %}
+	</div>
+</body>
+</html>
+
+</html>
+

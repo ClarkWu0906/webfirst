@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title1 %} 日期選擇和選項{% endblock title1 %}
+{% block head %}
+<style>
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #fff;
+    }
+</style>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <!-- 標題 -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <h1>已完成訂單</h1>
+        </div>
+    </div>
+    <!-- 下拉選單和日期選擇器 -->
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="select1">料號選擇</label>
+                <select class="form-control" id="select1">
+                    <option>1G-POE</option>
+                    <option>10G</option>
+                </select>
+                
+            </div>
+        </div>
+        <!-- 右半部分 -->
+        <div class="col-md-6">
+            <div class="form-group">
+              <label for="datepicker">選擇日期</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY/MM/DD">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">搜尋</button>
+                </div>                     
+              </div>
+            </div>
+          </div>
+  
+  
+    <!-- 下半部分 -->
+    <div class="row mt-3">
+        <!-- 上半部分 -->
+        <div class="col-md-12">
+            <h5>交期預測</h5>
+        </div>
+    </div>
+
+    
+    <!-- 下半部分 -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>訂單編號</th>
+                        <th>下單日</th>
+                        <th>料號</th>
+                        <th>訂單數</th>
+                        <th>客戶需求日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>5</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>8</td>
+                        <td>9</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<body>
+    
+</body>
+</html>
