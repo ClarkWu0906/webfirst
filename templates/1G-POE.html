@@ -16,6 +16,7 @@
 <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
 <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -50,17 +51,92 @@
               </div>
             </div>
           </div>
-  
-    <!-- 下半部分 -->
+          <!-- 每日機台數量長條圖 -->
+<div class="row mt-3">
+    <div class="col-md-12">
+        <h5>每日機台數量</h5>
+        <div id="chart"></div>
+    </div>
+</div>
+
+<!-- JavaScript代碼 -->
+<script>
+    var data = [
+        { date: '2023-04-16', count: 5 },
+        { date: '2023-04-17', count: 8 },
+        { date: '2023-04-18', count: 12 },
+        { date: '2023-04-19', count: 6 },
+        { date: '2023-04-20', count: 10 },
+        { date: '2023-04-21', count: 3 },
+        { date: '2023-04-22', count: 7 },
+    ];
+
+    var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        width = 600 - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
+
+    var x = d3.scaleBand()
+        .range([0, width])
+        .padding(0.1);
+
+    var y = d3.scaleLinear()
+        .range([height, 0]);
+
+    var svg = d3.select("#chart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    x.domain(data.map(function (d) { return d.date; }));
+    y.domain([0, d3.max(data, function (d) { return d.count; })]);
+
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+        svg.selectAll(".bar")
+  .data(data)
+  .enter().append("rect")
+  .attr("class", "bar")
+  .style("opacity", 0.25)
+  .attr("x", function (d) { return x(d.date); })
+  .attr("y", function (d) { return y(d.count); })
+  .attr("width", x.bandwidth())
+  .attr("height", function (d) { return height - y(d.count); })
+  .on("mouseover", function (d) {
+      d3.select(this).style("opacity", 0.75);
+      svg.append("text")
+          .attr("class", "tooltip")
+          .attr("x", x(d.date) + x.bandwidth() / 2)
+          .attr("y", y(d.count) - 5)
+          .attr("text-anchor", "middle")
+          .text(d.count);
+  })
+  .on("mouseout", function (d) {
+      d3.select(this).style("opacity", 0.25);
+      svg.select(".tooltip").remove();
+  })
+  .on("mousemove", function (d) {
+      svg.select(".tooltip")
+          .attr("x", d3.mouse(this)[0] + margin.left)
+          .attr("y", d3.mouse(this)[1] + margin.top - 10)
+          .text(d.count);
+  });
+
+</script>
+
+
+          <!-- 交期預測表格 -->
     <div class="row mt-3">
-        <!-- 上半部分 -->
         <div class="col-md-12">
             <h5>交期預測</h5>
         </div>
     </div>
-
-    
-    <!-- 下半部分 -->
     <div class="row mt-3">
         <div class="col-md-12">
             <table class="table table-striped">
