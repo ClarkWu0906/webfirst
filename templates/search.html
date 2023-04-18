@@ -27,17 +27,20 @@
     </div>
     <!-- 下拉選單和日期選擇器 -->
     <div class="row mt-3">
-        <div class="col-md-12 d-flex justify-content-center">
+        <form method="post" action="{{url_for('search')}}">
+            <div class="col-md-12 d-flex justify-content-center">
             <div class="form-group">
-              <label for="datepicker">輸入訂單編號</label>
+              <label for="datepicker" >輸入訂單編號</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="datepicker" placeholder="">
+                <input type="text" class="form-control" id="datepicker" placeholder="" name="search_id">
                 <div class="input-group-append">
-                  <button class="btn btn-primary" type="button">搜尋</button>
+                  <button class="btn btn-primary" type="submit" name="search_submit">搜尋</button>
                 </div>                     
               </div>
             </div>
           </div>
+        </form>
+    </div> 
           
   
     <!-- 下半部分 -->
@@ -60,7 +63,7 @@
                     <th>料號</th>
                     <th>訂單數</th>
                     <th>客戶需求日</th>
-                    <th>刪除</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +73,7 @@
                     <td>3</td>
                     <td>2</td>
                     <td>3</td>
-                    <td><button type="button" class="btn btn-danger btn-sm">刪除</button></td>
+                    <td><button type="button" class="btn btn-danger btn-sm" name="delete_submit">刪除</button></td>
                 </tr>
             </tbody>
         </table>

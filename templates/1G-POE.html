@@ -31,12 +31,11 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="select1">模式選擇</label>
-                <select class="form-control" id="select1">
-                    <option>選項1</option>
-                    <option>選項2</option>
-                    <option>選項3</option>
+                <select class="form-control" id="select1" name = "1G_option">
+                    <option value="option1.html">選項1</option>
+                    <option value="option2.html">選項2</option>
+                    <option value="option3.html">選項3</option>
                 </select>
-                
             </div>
         </div>
         <!-- 右半部分 -->
@@ -44,7 +43,7 @@
             <div class="form-group">
               <label for="datepicker">選擇日期</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY/MM/DD">
+                <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY-MM-DD">
                 <div class="input-group-append">
                   <button class="btn btn-primary" type="button">搜尋</button>
                 </div>                     
@@ -52,14 +51,14 @@
             </div>
           </div>
           <!-- 每日機台數量長條圖 -->
-<div class="row mt-3">
+<!-- <div class="row mt-3">
     <div class="col-md-12">
         <h5>每日機台數量</h5>
         <div id="chart"></div>
     </div>
-</div>
+</div> -->
 
-<!-- JavaScript代碼 -->
+<!-- JavaScript代碼
 <script>
     var data = [
         { date: '2023-04-16', count: 5 },
@@ -131,8 +130,8 @@
 </script>
 
 
-          <!-- 交期預測表格 -->
-    <div class="row mt-3">
+          交期預測表格 -->
+    <!-- <div class="row mt-3">
         <div class="col-md-12">
             <h5>交期預測</h5>
         </div>
@@ -178,7 +177,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --> 
 </div>
 {% endblock %}
 <body>
