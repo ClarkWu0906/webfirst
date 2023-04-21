@@ -32,30 +32,27 @@
             <div class="form-group">
               <label for="datepicker" >輸入訂單編號</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="datepicker" placeholder="" name="search_id" required>
+                <input type="text" class="form-control" id="datepicker" placeholder="" name="del_id">
                 <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit" name="search_submit">搜尋</button>
+                  <button class="btn btn-primary" type="submit" name="delete_submit">搜尋</button>
                 </div>                     
               </div>
             </div>
-          </div>
-          <div class="container">
-            {% if message %}
-            <div class="alert alert-info">
-              {{ message }}
-            </div>
-            {% endif %}
           </div>
         </form>
     </div> 
           
   
-    下半部分
+    <!-- 下半部分 -->
     <div class="row mt-3">
+        <!-- 上半部分 -->
         <div class="col-md-12">
             <h5>交期預測</h5>
         </div>
     </div>
+
+    
+   <!-- 下半部分 -->
 <div class="row mt-3">
     <div class="col-md-12">
         <table class="table table-striped">
@@ -71,21 +68,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <form method="post" action="{{ url_for('search') }}">
-                        {% if data %}
-                            <td>{{data['id']}}</td>
-                        {% else %}
-                            <td>No data available</td>
-                        {% endif %}
-                        <input value="{{ session['search_id'] }}" type="hidden" class="form-control" id="datepicker" placeholder="" name="delete_id">
-                        <td>2</td>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td><button type="submit" class="btn btn-danger btn-sm" name="delete_submit">刪除</button></td>
-                    </form>
-                    
-                    
+                    <td>1</td>
+                    <input hidden value="123" type="text" class="form-control" id="datepicker" placeholder="" name="delete_id">
+                    <td>2</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td><button type="button" class="btn btn-danger btn-sm" name="delete_submit">刪除</button></td>
                 </tr>
             </tbody>
         </table>

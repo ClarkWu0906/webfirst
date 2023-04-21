@@ -71,7 +71,7 @@
     <div class="row mt-3">
         <div class="col-md-12">
             <table class="table table-striped">
-                <thead>
+              <thead>
                     <tr>
                         <th>訂單編號</th>
                         <th>下單日</th>
@@ -81,27 +81,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                 {% for i in data1 %}
+                  
                     <tr>
-                        <td>1</td>
+                        <td>i</td>
+                        <td> {{ i+1 }} </td>
+                        <td>i-1</td>
                         <td>2</td>
                         <td>3</td>
-                        <td>2</td>
-                        <td>3</td>
                     </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                        <td>8</td>
-                        <td>9</td>
-                    </tr>
+                    {%endfor%}
                 </tbody>
             </table>
         </div>

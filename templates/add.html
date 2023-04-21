@@ -20,51 +20,55 @@
         </div>
     </div>
     <!-- 下拉選單和日期選擇器 -->
-    <div class="row mt-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="select1">料號選擇</label>
-                <select class="form-control" id="select1">
-                    <option>1G-POE</option>
-                    <option>10G</option>
-                </select>
+        <form method="POST" action="{{url_for('add')}}">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="select1">料號選擇</label>
+                        <select class="form-control" id="select1" name ="add_id">
+                            <option>1G-POE</option>
+                            <option>10G</option>
+                        </select>
+                    </div>
+                </div>
+                    <div class="col-md-6">
+                        <div class="form-group custom-input-width">
+                            <label for="datepicker">訂單數</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="datepicker" placeholder="" name = "add_num">
+                            </div>
+                        </div>
+                    </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group custom-input-width">
-                <label for="datepicker">訂單數</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="datepicker" placeholder="">
+
+      
+        <!-- 下半部分 -->   
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="form-group custom-input-width">
+                    <label for="datepicker">下單日</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY-MM-DD" name = "add_order">
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-  
-    <!-- 下半部分 -->   
-    <div class="row mt-3">
-        <div class="col-md-6">
-            <div class="form-group custom-input-width">
-                <label for="datepicker">下單日</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY-MM-DD">
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group custom-input-width">
-                <label for="datepicker2">顧客需求日</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="datepicker2" placeholder="範例：YYYY/MM/DD">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">新增</button>
+            <div class="col-md-6">
+                <div class="form-group custom-input-width">
+                    <label for="datepicker2">顧客需求日</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="datepicker2" placeholder="範例：YYYY/MM/DD" name = "add_need">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" name="add_submit">新增</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        </form>
+        
       
 
-</div>
+
 {% endblock %}
 <body>
     

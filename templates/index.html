@@ -22,7 +22,7 @@
 <body>
 	<div class="row mt-3">
         <div class="col-md-12">
-            <h1>上傳檔案</h1>
+            <h1>機台狀態上傳</h1>
         </div>
     </div>
 	<div class="container">
@@ -55,37 +55,38 @@
 		});
 
 		// 拖曳上傳檔案
-        dropzone.on('drop', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        dropzone.removeClass('highlight');
-        var files = e.originalEvent.dataTransfer.files;
-var formData = new FormData();
-for (var i = 0; i < files.length; i++) {
-	formData.append('file[]', files[i]);
-}
+		dropzone.on('drop', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			dropzone.removeClass('highlight');
+			var files = e.originalEvent.dataTransfer.files;
+			var formData = new FormData();
+			for (var i = 0; i < files.length; i++) {
+				formData.append('file', files[i], files[i].name);
+			}
 
-// 透過 AJAX 上傳檔案
-$.ajax({
-	url: '/upload',
-	type: 'POST',
-	data: formData,
-	processData: false,
-	contentType: false,
-	xhr: function() {
-		var xhr = $.ajaxSettings.xhr();
-		if (xhr.upload) {
-			xhr.upload.addEventListener('progress', function(e) {
-				var percent = Math.round((e.loaded / e.total) * 100);
-				progress.html(percent + '%');
-			}, false);
-		}
-		return xhr;
-	},
-	success: function(data) {
-		message.html(data);
-	}
-});
-});
-</script>
+			// 透過 AJAX 上傳檔案
+			$.ajax({
+				url: '/upload',
+				type: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				xhr: function() {
+					var xhr = $.ajaxSettings.xhr();
+					if (xhr.upload) {
+						xhr.upload.addEventListener('progress', function(e) {
+							var percent = Math.round((e.loaded / e.total) * 100);
+							progress.html(percent + '%');
+						}, false);
+					}
+					return xhr;
+				},
+				success: function(data) {
+					message.html(data);
+				}
+			});
+		});
+
+	</script>
 {% endblock %}
