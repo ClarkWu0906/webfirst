@@ -59,15 +59,17 @@
       
       
     <!-- 下半部分 -->
+    {%if finish_data %}
     <div class="row mt-3">
         <!-- 上半部分 -->
         <div class="col-md-12">
-            <h5>交期預測</h5>
+            <h5>完成訂單</h5>
         </div>
     </div>
 
     
     <!-- 下半部分 -->
+
     <div class="row mt-3">
         <div class="col-md-12">
             <table class="table table-striped">
@@ -80,17 +82,23 @@
                         <th>客戶需求日</th>
                     </tr>
                 </thead>
+                {%endif%}
                 <tbody>
-                 {% for i in data1 %}
-                  
+                {% for d in finish_data["finish_queue"]%}
+                  {% for key, value in d.items()%}
+                     {%if "id" in value %}          
+                     {%if value["type"] == finished_select_end %}      
                     <tr>
-                        <td>i</td>
-                        <td> {{ i+1 }} </td>
-                        <td>i-1</td>
-                        <td>2</td>
-                        <td>3</td>
+                        <td>{{value["id"]}}</td>
+                        <td> {{value["need_date"]}} </td>
+                        <td>{{value["type"]}}</td>
+                        <td>{{value["number"]}}</td>
+                        <td>{{value["order_date"]}}</td>
                     </tr>
-                    {%endfor%}
+                    {% endif %}
+                    {% endif %}
+                  {%endfor%}
+                {%endfor%}
                 </tbody>
             </table>
         </div>

@@ -56,7 +56,7 @@
                 <div class="form-group custom-input-width">
                     <label for="datepicker2">顧客需求日</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="datepicker2" placeholder="範例：YYYY/MM/DD" name = "add_need">
+                        <input type="text" class="form-control" id="datepicker2" placeholder="範例：YYYY-MM-DD" name = "add_need">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" name="add_submit">新增</button>
                         </div>
@@ -64,6 +64,11 @@
                 </div>
             </div>
         </div>
+        {% if message %}
+            <div class="alert alert-info">
+              {{ message }}
+            </div>
+        {% endif %}
         </form>
         
       

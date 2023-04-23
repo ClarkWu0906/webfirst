@@ -36,54 +36,77 @@ def upload():
     
     return jsonify({'result': '上傳成功', 'filename': filename})
 
-
-@app.route('/1G-POE')
-def page2():
-    return render_template('1G-POE.html')
-
-@app.route('/options', methods=['POST'])
-def options():
-    selected_option = request.form['1G_option']
-    if selected_option == 'option1':
-        return render_template('1G_mode1.html')
-    else:
-        return "Invalid option"
-
-@app.route('/finished', methods = ['POST', 'GET'])
-def finished():
-        datas =[2, 2, 3, 4]
-        if request.method == 'POST':
-            # url = "http://140.115.52.21:11135/test"
-            # payload={}
-            # headers = {}
-            # response = requests.request("POST", url, headers=headers, data=payload)
-            # print(response.text)
-            return render_template('finished.html', data1 = datas)
-        elif request.method == 'GET':
-            return render_template('finished.html' , data1 = datas)
-
-
-@app.route('/add',methods = ['POST', 'GET'])
-def add():
+@app.route('/1G_mode3', methods=['GET', 'POST'])
+def mode3():
     if request.method == 'POST':
-        return render_template('add.html')
+        predict_date = request.form.get("1G_date_mode3")
+        urll = "http://140.115.52.21:11135/"
+        payloadd=""
+        headerss = {}
+        responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
+        url = "http://140.115.52.21:11135/change"
+        payload = json.dumps({
+            "mode": 3,
+            "start_date": predict_date
+            })
+        headers = {
+                'Content-Type': 'application/json'
+            }
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        print(response.text)
+        data = json.loads(response.text)
+        if response.ok:
+            return render_template('1G_mode3.html', predict_date=predict_date, mode3_predict_data=data)
+        else:
+            return render_template('1G_mode3.html',mode3_predict_data={})
     elif request.method == 'GET':
-         return render_template('add.html')
+        return render_template('1G_mode3.html',mode3_predict_data={})
+    return render_template('1G_mode3.html')
 
-from flask import session
 
-@app.route('/search', methods=['POST', 'GET'])
-def search():
+@app.route('/1G-POE', methods=['GET', 'POST'])
+def page2():
     if request.method == 'POST':
-        search_id = str(request.form.get("search_id"))
-        delete_id = request.form.get("delete_id")
-        if search_id:
-            print('search_id:', search_id)
-            url = "http://140.115.52.21:11135/search"
-
+        option_1G = request.form.get("option_1G")
+        predict_date = request.form.get("1G_date")
+        print(option_1G)
+        if option_1G == "mode1":
+            print("hu")
+            url = "http://140.115.52.21:11135/"
+            payload=""
+            headers = {}
+            response = requests.request("POST", url, headers=headers, data=payload)
+            url = "http://140.115.52.21:11135/change"
             payload = json.dumps({
-                                "id": search_id
-                                })
+                "mode": 1,
+                "start_date": predict_date
+            })
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+            print(response)
+            print(response.text)
+            data = json.loads(response.text)
+            if response.ok:
+                print("ok")
+                return render_template('1G-POE.html', option_1G=option_1G, predict_date=predict_date, predict_data=data,message='計算完成')
+            else:
+                return render_template('1G-POE.html',predict_data={})
+
+        elif option_1G == "mode2":
+            urll = "http://140.115.52.21:11135/"
+            payloadd=""
+            headerss = {}
+            responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
+            url = "http://140.115.52.21:11135/change"
+            payload = json.dumps({
+                "mode": 2,
+                "start_date": predict_date
+            })
             headers = {
                 'Content-Type': 'application/json'
             }
@@ -92,9 +115,106 @@ def search():
 
             print(response.text)
             data = json.loads(response.text)
-            return render_template('search.html', data=data)
-        elif delete_id:
+            if response.ok:
+                print("ok")
+                return render_template('1G-POE.html', option_1G=option_1G, predict_date=predict_date, predict_data=data,message='計算完成')
+            else:
+                return render_template('1G-POE.html',predict_data={})
+        elif option_1G == "mode3":
+            urll = "http://140.115.52.21:11135/"
+            payloadd=""
+            headerss = {}
+            responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
+            url = "http://140.115.52.21:11135/change"
+            payload = json.dumps({
+                "mode": 3,
+                "start_date": predict_date
+            })
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+
+            print(response.text)
+            data = json.loads(response.text)
+            if response.ok:
+                print("ok")
+                return render_template('1G-POE.html', option_1G=option_1G, predict_date=predict_date, predict_data=data,message='計算完成')
+            else:
+                return render_template('1G-POE.html',predict_data={})
+        else:
+            return render_template('1G-POE.html', predict_data={})
+    elif request.method == 'GET':
+        return render_template('1G-POE.html',predict_data={})
+
+
+
+
+
+@app.route('/finished', methods = ['POST', 'GET'])
+def finished():
+        if request.method == 'POST':
+            finished_select_option = request.form.get("finished_select_option")
+            url = "http://140.115.52.21:11135/"
+            payload=""
+            headers = {}
+            response = requests.request("POST", url, headers=headers, data=payload)
+            data = json.loads(response.text)
+            print(finished_select_option)
+            return render_template('finished.html', finish_data = data, finished_select_end = finished_select_option)
+        elif request.method == 'GET':
+            return render_template('finished.html', finish_data={})
+
+
+@app.route('/add',methods = ['POST', 'GET'])
+def add():
+    if request.method == 'POST':
+        add_id = request.form.get("add_id")
+        add_num = int(request.form.get("add_num"))
+        add_order = request.form.get("add_order")
+        add_need = request.form.get("add_need")
+        print(type(add_need),type(add_id),type(add_num),type(add_order))
+        if add_id and add_num and add_order and add_need:
+            urll = "http://140.115.52.21:11135/"
+            payloadd=""
+            headerss = {}
+            responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
+            url = "http://140.115.52.21:11135/insertorder"
+            payload = json.dumps({
+            "need_date": add_need,
+            "number": add_num,
+            "order_date": add_order,
+            "type": add_id
+            })
+            headers = {
+            'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+
+            if response.ok:
+                return render_template('add.html',message='上傳完成')
+            else:
+                return render_template('add.html', message='上傳失敗')
+        else:
+            return render_template('add.html')
+    elif request.method == 'GET':
+         return render_template('add.html')
+
+
+
+@app.route('/search', methods=['POST', 'GET'])
+def search():
+    if request.method == 'POST':
+        search_id = str(request.form.get("search_id"))
+        delete_id = request.form.get("delete_id")
+        if delete_id:
             print('delete_id:', delete_id)
+            urll = "http://140.115.52.21:11135/"
+            payloadd=""
+            headerss = {}
+            responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
             url = "http://140.115.52.21:11135/deleteorder"
 
             payload = json.dumps({
@@ -105,10 +225,39 @@ def search():
             }
 
             response = requests.request("POST", url, headers=headers, data=payload)
-
             print(response.text)
-            data = json.loads(response.text)
-            return render_template('search.html', message='Record deleted successfully.')
+            if response.ok:
+                return render_template('search.html', message='Record deleted successfully.')
+            else:
+                return render_template('search.html', message='刪除失敗')
+            
+        elif search_id:
+            print('search_id:', search_id)
+            urll = "http://140.115.52.21:11135/"
+            payloadd=""
+            headerss = {}
+            responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
+            url = "http://140.115.52.21:11135/search"
+
+            payload = json.dumps({
+                                "id": search_id
+                                })
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+            print(len(response.text))
+            print(response.text)
+            #Sprint(json.load(response))
+            
+            session['search_id'] = search_id
+            if len(response.text) == 3:
+                return render_template('search.html',message='無此訂單')
+                
+            else:
+                data = json.loads(response.text)
+                return render_template('search.html', search_data=data,message='搜尋成功')
         else:
             return render_template('search.html')
     else:

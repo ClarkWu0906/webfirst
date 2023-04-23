@@ -50,39 +50,42 @@
     </div> 
           
   
-    下半部分
+    <!-- 下半部分 -->
+    {% if search_data %}
     <div class="row mt-3">
         <div class="col-md-12">
             <h5>交期預測</h5>
         </div>
     </div>
+    {%endif%}
 <div class="row mt-3">
     <div class="col-md-12">
         <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>訂單編號</th>
-                    <th>下單日</th>
-                    <th>料號</th>
-                    <th>訂單數</th>
-                    <th>客戶需求日</th>
-                    <th></th>
-                </tr>
-            </thead>
+            
             <tbody>
                 <tr>
                     <form method="post" action="{{ url_for('search') }}">
-                        {% if data %}
-                            <td>{{data['id']}}</td>
-                        {% else %}
-                            <td>No data available</td>
-                        {% endif %}
                         <input value="{{ session['search_id'] }}" type="hidden" class="form-control" id="datepicker" placeholder="" name="delete_id">
-                        <td>2</td>
-                        <td>3</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td><button type="submit" class="btn btn-danger btn-sm" name="delete_submit">刪除</button></td>
+                        {% if search_data %}
+                        <thead>
+                            <tr>
+                                <th>訂單編號</th>
+                                <th>下單日</th>
+                                <th>料號</th>
+                                <th>訂單數</th>
+                                <th>客戶需求日</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                            <td>{{search_data['id']}}</td>
+                            <td>{{search_data['order_date']}}</td>
+                            <td>{{search_data['number']}}</td>
+                            <td>{{search_data['type']}}</td>
+                            <td>{{search_data['need_date']}}</td>
+                            <td><button type="submit" class="btn btn-danger btn-sm" name="delete_submit">刪除</button></td>
+                        {% else %}
+                        {% endif %}
+                        
                     </form>
                     
                     

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title1 %} 拖曳上傳檔案{% endblock %}
+{% block title1 %} 機台狀態(上傳){% endblock %}
 {% block head %}
 <style>
 	#dropzone {
@@ -17,6 +17,7 @@
 		color: #66ccff;
 	}
 </style>
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
 {% endblock %}
 {% block content %}
 <body>
