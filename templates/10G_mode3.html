@@ -2,7 +2,30 @@
 
 {% block title1 %} 日期選擇和選項{% endblock title1 %}
 {% block head %}
+<style>
+    #dropzone {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        margin-top: 50px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ccc;
+    }
 
+    #dropzone.highlight {
+        border-color: #66ccff;
+        color: #66ccff;
+    }
+</style>
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <style>
     .table-striped tbody tr:nth-of-type(odd) {
         background-color: #f9f9f9;
@@ -11,37 +34,33 @@
     .table-striped tbody tr:nth-of-type(even) {
         background-color: #fff;
     }
-
-    .table tr:nth-child(even) {
-        background-color: white;
-    }
-
-    .table tr:nth-child(odd) {
-        background-color: white;
-    }
 </style>
-<!-- <script src="https://d3js.org/d3.v6.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
 <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+
+
 {% endblock %}
 {% block content %}
 <div class="container">
     <!-- 標題 -->
     <div class="row mt-3">
         <div class="col-md-12">
-            <h1>1G-POE預測交期 | 模式切換</h1>
+            <h1>10G預測交期 | 模式切換</h1>
         </div>
     </div>
     <!-- 下拉選單和日期選擇器 -->
-    <form method="POST" action="{{url_for('page2')}}">
+    <form method="POST" action="{{url_for('tenG_mode3')}}">
         <div class="row mt-3">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="select1">模式選擇</label>
-                    <select class="form-control" id="mySelect" name="option_1G">
+                    <select class="form-control" id="mySelect" name="option_10G_mode3">
                         <option value="mode1">模式一</option>
                         <option value="mode2">模式二</option>
                         <option value="mode3">模式三</option>
@@ -51,11 +70,11 @@
                         selectElement.addEventListener('change', (event) => {
                             if (event.target.value === 'mode3') {
                                 sessionStorage.setItem('selectedMode', event.target.value);
-                                window.location.href = '1G_mode3';
+                                window.location.href = '10G_mode3';
                             }
                             else if (event.target.value === 'mode1' || event.target.value === 'mode2') {
                                 sessionStorage.setItem('selectedMode', event.target.value);
-                                window.location.href = '1G-POE';
+                                window.location.href = '10G';
                             }
                         });
                         const selectedMode = sessionStorage.getItem('selectedMode');
@@ -72,7 +91,7 @@
                     <label for="datepicker">選擇日期</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY-MM-DD"
-                            name="1G_date">
+                            name="10G_date_mode3">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">搜尋</button>
                         </div>
@@ -80,10 +99,72 @@
                 </div>
             </div>
     </form>
-   
+    <div class="container">
+        <div id="dropzone">拖曳檔案到這裡上傳</div>
+        <div id="progress"></div>
+        <div id="message"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var dropzone = $('#dropzone');
+        var progress = $('#progress');
+        var message = $('#message');
 
-    {% if option_1G %}
-    <!-- 每日機台數量長條圖 -->
+        // 防止瀏覽器預設的拖曳事件
+        $(document).on('dragenter', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.addClass('highlight');
+        });
+        $(document).on('dragover', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.addClass('highlight');
+        });
+        $(document).on('dragleave', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.removeClass('highlight');
+        });
+
+        // 拖曳上傳檔案
+        dropzone.on('drop', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.removeClass('highlight');
+            var files = e.originalEvent.dataTransfer.files;
+            var formData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                formData.append('file', files[i], files[i].name);
+            }
+
+            // 透過 AJAX 上傳檔案
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    var xhr = $.ajaxSettings.xhr();
+                    if (xhr.upload) {
+                        xhr.upload.addEventListener('progress', function (e) {
+                            var percent = Math.round((e.loaded / e.total) * 100);
+                            progress.html(percent + '%');
+                        }, false);
+                    }
+                    return xhr;
+                },
+                success: function (data) {
+                    message.html(data);
+                }
+            });
+        });
+
+    </script>
+
+    {% if option_10G_mode3%}
     <div class="row mt-3">
         <div class="col-md-12">
             {% if message %}
@@ -95,14 +176,15 @@
             <div id="chart"></div>
         </div>
 
-
     <!-- JavaScript代碼 -->
 
     <!-- JavaScript代碼 -->
 
     <script>
-        var machine_num_need_1G = null;
-        machine_num_need_1G = {{ predict_data.machine_num_need_1G | safe }};
+        var machine_num_need_10G = null;
+        machine_num_need_10G = {{ mode3_predict_data.machine_num_need_10G | safe }};
+
+
         var data = [];
 
         var predict_date = new Date('{{ predict_date }}');
@@ -110,9 +192,9 @@
         // 將machine_num_1G的數據轉換成符合要求的格式
         var formattedData = [];
 
-        if (machine_num_need_1G !== null) {
+        if (machine_num_need_10G !== null) {
 
-            formattedData = machine_num_need_1G.map(function (item) {
+            formattedData = machine_num_need_10G.map(function (item) {
                 var item_key = Object.keys(item)[0];
                 if (item_key !== null) {
                     var date = new Date(item[item_key].date);
@@ -178,7 +260,7 @@
             .call(d3.axisBottom(x));
 
         svg.append("g")
-            .call(d3.axisLeft(y));
+            .call(d3.axisLeft(y).tickValues([0]));
 
         svg.selectAll(".bar")
             .data(data)
@@ -211,21 +293,11 @@
 
     </script>
 
-
-    <!-- 交期預測表格 
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <h5>交期預測</h5>
-        </div>
-    </div> -->
-    
+    <!-- 交期預測表格  -->
         <div class="col-md-12">
             <h5>交期預測</h5>
             <table class="table  table-bordered table-white table-hover">
-
                 <thead>
-
-
                     <tr>
                         <th>訂單編號</th>
                         <th>下單日</th>
@@ -235,7 +307,7 @@
                         <th>預測交期</th>
                     </tr>
                 </thead>
-                {% for d in predict_data["pq_1G"] %}
+                {% for d in mode3_predict_data["pq_10G"] %}
                 {% for key, value in d.items() %}
                 {% if "id" in value and value["status"] == false%}
                 <style>
@@ -263,8 +335,6 @@
                 {% endif %}
                 {% endfor %}
                 {% endfor %}
-
-
                 </tbody>
             </table>
         </div>

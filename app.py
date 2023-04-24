@@ -35,10 +35,40 @@ def upload():
     print(response.text)
     
     return jsonify({'result': '上傳成功', 'filename': filename})
+@app.route('/10G_mode3', methods=['GET', 'POST'])
+def tenG_mode3():
+    if request.method == 'POST':
+        option_10G_mode3 = request.form.get("option_10G_mode3")
+        predict_date = request.form.get("10G_date_mode3")
+        urll = "http://140.115.52.21:11135/"
+        payloadd=""
+        headerss = {}
+        responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
+        url = "http://140.115.52.21:11135/change"
+        payload = json.dumps({
+            "mode": 3,
+            "start_date": predict_date
+            })
+        headers = {
+                'Content-Type': 'application/json'
+            }
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        print(response.text)
+        data = json.loads(response.text)
+        if response.ok:
+            return render_template('10G_mode3.html', option_10G_mode3 =option_10G_mode3, predict_date=predict_date, mode3_predict_data=data,message='計算完成')
+        else:
+            return render_template('10G_mode3.html',mode3_predict_data={})
+    elif request.method == 'GET':
+        return render_template('10G_mode3.html',mode3_predict_data={})
+    return render_template('10G_mode3.html')
 
 @app.route('/1G_mode3', methods=['GET', 'POST'])
-def mode3():
+def oneG_mode3():
     if request.method == 'POST':
+        option_1G_mode3 = request.form.get("option_1G_mode3")
         predict_date = request.form.get("1G_date_mode3")
         urll = "http://140.115.52.21:11135/"
         payloadd=""
@@ -58,12 +88,13 @@ def mode3():
         print(response.text)
         data = json.loads(response.text)
         if response.ok:
-            return render_template('1G_mode3.html', predict_date=predict_date, mode3_predict_data=data)
+            return render_template('1G_mode3.html', option_1G_mode3 =option_1G_mode3 ,predict_date=predict_date, mode3_predict_data=data,message='計算完成')
         else:
             return render_template('1G_mode3.html',mode3_predict_data={})
     elif request.method == 'GET':
         return render_template('1G_mode3.html',mode3_predict_data={})
     return render_template('1G_mode3.html')
+
 
 
 @app.route('/1G-POE', methods=['GET', 'POST'])
@@ -119,14 +150,48 @@ def page2():
                 return render_template('1G-POE.html', option_1G=option_1G, predict_date=predict_date, predict_data=data,message='計算完成')
             else:
                 return render_template('1G-POE.html',predict_data={})
-        elif option_1G == "mode3":
+        else:
+            return render_template('1G-POE.html', predict_data={})
+    elif request.method == 'GET':
+        return render_template('1G-POE.html',predict_data={})
+
+@app.route('/10G', methods=['GET', 'POST'])
+def tenGpage2():
+    if request.method == 'POST':
+        option_10G = request.form.get("option_10G")
+        predict_date = request.form.get("10G_date")
+        print(option_10G)
+        if option_10G == "mode1":
+            url = "http://140.115.52.21:11135/"
+            payload=""
+            headers = {}
+            response = requests.request("POST", url, headers=headers, data=payload)
+            url = "http://140.115.52.21:11135/change"
+            payload = json.dumps({
+                "mode": 1,
+                "start_date": predict_date
+            })
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+            print(response)
+            print(response.text)
+            data = json.loads(response.text)
+            if response.ok:
+                return render_template('10G-POE.html', option_10G=option_10G, predict_date=predict_date, predict_data=data,message='計算完成')
+            else:
+                return render_template('10G-POE.html',predict_data={})
+
+        elif option_10G == "mode2":
             urll = "http://140.115.52.21:11135/"
             payloadd=""
             headerss = {}
             responsee = requests.request("POST", urll, headers=headerss, data=payloadd)
             url = "http://140.115.52.21:11135/change"
             payload = json.dumps({
-                "mode": 3,
+                "mode": 2,
                 "start_date": predict_date
             })
             headers = {
@@ -138,15 +203,13 @@ def page2():
             print(response.text)
             data = json.loads(response.text)
             if response.ok:
-                print("ok")
-                return render_template('1G-POE.html', option_1G=option_1G, predict_date=predict_date, predict_data=data,message='計算完成')
+                return render_template('10G-POE.html', option_10G=option_10G, predict_date=predict_date, predict_data=data,message='計算完成')
             else:
-                return render_template('1G-POE.html',predict_data={})
+                return render_template('10G-POE.html',predict_data={})
         else:
-            return render_template('1G-POE.html', predict_data={})
+            return render_template('10G-POE.html', predict_data={})
     elif request.method == 'GET':
-        return render_template('1G-POE.html',predict_data={})
-
+        return render_template('10G-POE.html',predict_data={})
 
 
 

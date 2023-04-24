@@ -3,19 +3,20 @@
 {% block title1 %} 日期選擇和選項{% endblock title1 %}
 {% block head %}
 <style>
-	#dropzone {
-		border: 2px dashed #ccc;
-		padding: 20px;
-		margin-top: 50px;
-		text-align: center;
-		font-size: 18px;
-		font-weight: bold;
-		color: #ccc;
-	}
-	#dropzone.highlight {
-		border-color: #66ccff;
-		color: #66ccff;
-	}
+    #dropzone {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        margin-top: 50px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ccc;
+    }
+
+    #dropzone.highlight {
+        border-color: #66ccff;
+        color: #66ccff;
+    }
 </style>
 <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
@@ -29,6 +30,7 @@
     .table-striped tbody tr:nth-of-type(odd) {
         background-color: #f9f9f9;
     }
+
     .table-striped tbody tr:nth-of-type(even) {
         background-color: #fff;
     }
@@ -53,133 +55,251 @@
         </div>
     </div>
     <!-- 下拉選單和日期選擇器 -->
-    <form method="POST" action="{{url_for('mode3')}}">
+    <form method="POST" action="{{url_for('oneG_mode3')}}">
         <div class="row mt-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="select1">模式選擇</label>
-                <select class="form-control" id="mySelect" name="option_1G_mode3">
-                    <option value="mode1">模式一</option>
-                    <option value="mode2">模式二</option>
-                    <option value="mode3">模式三</option>
-                </select>
-                <script>
-                    const selectElement = document.querySelector('#mySelect');
-                    selectElement.addEventListener('change', (event) => {
-                        if (event.target.value === 'mode3') {
-                            sessionStorage.setItem('selectedMode', event.target.value);
-                            window.location.href = '1G_mode3';
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="select1">模式選擇</label>
+                    <select class="form-control" id="mySelect" name="option_1G_mode3">
+                        <option value="mode1">模式一</option>
+                        <option value="mode2">模式二</option>
+                        <option value="mode3">模式三</option>
+                    </select>
+                    <script>
+                        const selectElement = document.querySelector('#mySelect');
+                        selectElement.addEventListener('change', (event) => {
+                            if (event.target.value === 'mode3') {
+                                sessionStorage.setItem('selectedMode', event.target.value);
+                                window.location.href = '1G_mode3';
+                            }
+                            else if (event.target.value === 'mode1' || event.target.value === 'mode2') {
+                                sessionStorage.setItem('selectedMode', event.target.value);
+                                window.location.href = '1G-POE';
+                            }
+                        });
+                        const selectedMode = sessionStorage.getItem('selectedMode');
+                        if (selectedMode) {
+                            selectElement.value = selectedMode;
                         }
-                        else if(event.target.value === 'mode1' ||event.target.value === 'mode2') {
-                            sessionStorage.setItem('selectedMode', event.target.value);
-                            window.location.href = '1G-POE';
-                        }
-                    });
-                    const selectedMode = sessionStorage.getItem('selectedMode');
-                    if (selectedMode) {
-                        selectElement.value = selectedMode;
-                    }
-                </script>
+                    </script>
+                </div>
+
             </div>
-            
-        </div>
-        <!-- 右半部分 -->
-        <div class="col-md-6">
-            <div class="form-group">
-              <label for="datepicker">選擇日期</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY-MM-DD" name = "1G_date_mode3">
-                <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit">搜尋</button>
-                </div>                     
-              </div>
+            <!-- 右半部分 -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="datepicker">選擇日期</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="datepicker" placeholder="範例：YYYY-MM-DD"
+                            name="1G_date_mode3">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">搜尋</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
     </form>
     <div class="container">
-		<div id="dropzone">拖曳檔案到這裡上傳</div>
-		<div id="progress"></div>
-		<div id="message"></div>
-	</div>
-	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
-	<script>
-		var dropzone = $('#dropzone');
-		var progress = $('#progress');
-		var message = $('#message');
+        <div id="dropzone">拖曳檔案到這裡上傳</div>
+        <div id="progress"></div>
+        <div id="message"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var dropzone = $('#dropzone');
+        var progress = $('#progress');
+        var message = $('#message');
 
-		// 防止瀏覽器預設的拖曳事件
-		$(document).on('dragenter', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.addClass('highlight');
-		});
-		$(document).on('dragover', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.addClass('highlight');
-		});
-		$(document).on('dragleave', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.removeClass('highlight');
-		});
+        // 防止瀏覽器預設的拖曳事件
+        $(document).on('dragenter', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.addClass('highlight');
+        });
+        $(document).on('dragover', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.addClass('highlight');
+        });
+        $(document).on('dragleave', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.removeClass('highlight');
+        });
 
-		// 拖曳上傳檔案
-		dropzone.on('drop', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.removeClass('highlight');
-			var files = e.originalEvent.dataTransfer.files;
-			var formData = new FormData();
-			for (var i = 0; i < files.length; i++) {
-				formData.append('file', files[i], files[i].name);
-			}
+        // 拖曳上傳檔案
+        dropzone.on('drop', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            dropzone.removeClass('highlight');
+            var files = e.originalEvent.dataTransfer.files;
+            var formData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                formData.append('file', files[i], files[i].name);
+            }
 
-			// 透過 AJAX 上傳檔案
-			$.ajax({
-				url: '/upload',
-				type: 'POST',
-				data: formData,
-				processData: false,
-				contentType: false,
-				xhr: function() {
-					var xhr = $.ajaxSettings.xhr();
-					if (xhr.upload) {
-						xhr.upload.addEventListener('progress', function(e) {
-							var percent = Math.round((e.loaded / e.total) * 100);
-							progress.html(percent + '%');
-						}, false);
-					}
-					return xhr;
-				},
-				success: function(data) {
-					message.html(data);
-				}
-			});
-		});
+            // 透過 AJAX 上傳檔案
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    var xhr = $.ajaxSettings.xhr();
+                    if (xhr.upload) {
+                        xhr.upload.addEventListener('progress', function (e) {
+                            var percent = Math.round((e.loaded / e.total) * 100);
+                            progress.html(percent + '%');
+                        }, false);
+                    }
+                    return xhr;
+                },
+                success: function (data) {
+                    message.html(data);
+                }
+            });
+        });
 
-	</script>
-    <!-- <form method="POST" action="{{url_for('page2')}}" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="file_upload">上傳</label>
-            <input type="file" name="mode3_upload" id="file_upload">
-        </div>
-        <button type="submit" class="btn btn-primary">提交</button>
-    </form>
-     -->
+    </script>
+
     {% if option_1G_mode3%}
+    <!-- 每日機台數量長條圖 -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            {% if message %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endif %}
+            <h5>每日機台數量</h5>
+            <div id="chart"></div>
+        </div>
     
+    <script>
+        var machine_num_need_1G = null;
+        machine_num_need_1G = {{ mode3_predict_data.machine_num_need_1G | safe }};
+        var data = [];
 
-         <!-- 交期預測表格  -->
-     <div class="row mt-3">
+        var predict_date = new Date('{{ predict_date }}');
+
+        // 將machine_num_1G的數據轉換成符合要求的格式
+        var formattedData = [];
+
+        if (machine_num_need_1G !== null) {
+
+            formattedData = machine_num_need_1G.map(function (item) {
+                var item_key = Object.keys(item)[0];
+                if (item_key !== null) {
+                    var date = new Date(item[item_key].date);
+                    if (date > predict_date) {
+                        var return_data = { date: date, count: item[item_key].number };
+                        return return_data;
+                    }
+                }
+            });
+        }
+
+
+
+        // 去掉null數據並按照日期排序
+        formattedData = formattedData.filter(function (item) {
+            return item !== null;
+        }).sort(function (a, b) {
+            return a.date - b.date;
+        });
+
+        // // 只保留最近的14筆數據
+        var slicedData = formattedData.slice(-14);
+
+        // // 將數據格式轉換回原始的日期格式
+        for (var i = 0; i < slicedData.length; i++) {
+            var this_date = slicedData[i];
+            if (this_date !== undefined) {
+                this_date = this_date.date.toISOString().slice(0, 10);
+                console.log(this_date)
+                data.push({
+                    date: this_date,
+                    count: slicedData[i].count
+                });
+            }
+
+        }
+        console.log(data);
+
+
+        var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+            width = 1000 - margin.left - margin.right,
+            height = 300 - margin.top - margin.bottom;
+
+        var x = d3.scaleBand()
+            .range([0, width])
+            .padding(0.1);
+
+        var y = d3.scaleLinear()
+            .range([height, 0]);
+
+        var svg = d3.select("#chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        x.domain(data.map(function (d) { return d.date; }));
+        y.domain([0, d3.max(data, function (d) { return d.count; })]);
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .style("opacity", 0.25)
+            .attr("x", function (d) { return x(d.date); })
+            .attr("y", function (d) { return y(d.count); })
+            .attr("width", x.bandwidth())
+            .attr("height", function (d) { return height - y(d.count); })
+            .on("mouseover", function (d) {
+                d3.select(this).style("opacity", 0.75);
+                svg.append("text")
+                    .attr("class", "tooltip")
+                    .attr("x", x(d.date) + x.bandwidth() / 2)
+                    .attr("y", y(d.count) - 5)
+                    .attr("text-anchor", "middle")
+                    .text(d.count);
+            })
+            .on("mouseout", function (d) {
+                d3.select(this).style("opacity", 0.25);
+                svg.select(".tooltip").remove();
+            })
+            .on("mousemove", function (d) {
+                svg.select(".tooltip")
+                    .attr("x", d3.mouse(this)[0] + margin.left)
+                    .attr("y", d3.mouse(this)[1] + margin.top - 10)
+                    .text(d.count);
+            });
+
+    </script>
+    <!-- 交期預測表格  -->
+    <!-- <div class="row mt-3">
         <div class="col-md-12">
             <h5>交期預測</h5>
         </div>
-    </div>
-    <div class="row mt-3">
+    </div> -->
+
+    
         <div class="col-md-12">
-            <table class="table table-striped">
+            <div class="col-md-12">
+                <h5>交期預測</h5>
+            </div>
+            <table class="table  table-bordered table-white table-hover">
                 <thead>
                     <tr>
                         <th>訂單編號</th>
@@ -190,30 +310,45 @@
                         <th>預測交期</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for d in mode3_predict_data["pq_1G"]%}
-                    {% for key, value in d.items()%}
-                     {%if "id" in value %}              
-                    <tr>
-                        <td>{{value["id"]}}</td>
-                        <td> {{value["need_date"]}} </td>
-                        <td>{{value["type"]}}</td>
-                        <td>{{value["number"]}}</td>
-                        <td>{{value["order_date"]}}</td>
-                        <td>{{value["delivery_date"]}}</td>
-                    </tr>
-                    {% endif %}
-                  {%endfor%}
-                {%endfor%}
+                {% for d in mode3_predict_data["pq_1G"] %}
+                {% for key, value in d.items() %}
+                {% if "id" in value and value["status"] == false %}
+                <style>
+                    .red-text {
+                        color: red;
+                    }
+                </style>
+                <tr class="red-text">
+                    <td>{{ value["id"] }}</td>
+                    <td>{{ value["need_date"] }}</td>
+                    <td>{{ value["type"] }}</td>
+                    <td>{{ value["number"] }}</td>
+                    <td>{{ value["order_date"] }}</td>
+                    <td>{{ value["delivery_date"] }}</td>
+                </tr>
+                {% elif "id" in value %}
+                <tr>
+                    <td>{{ value["id"] }}</td>
+                    <td>{{ value["need_date"] }}</td>
+                    <td>{{ value["type"] }}</td>
+                    <td>{{ value["number"] }}</td>
+                    <td>{{ value["order_date"] }}</td>
+                    <td>{{ value["delivery_date"] }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
 
                 </tbody>
             </table>
         </div>
-    </div> 
+    </div>
     {%endif%}
 </div>
 {% endblock %}
+
 <body>
-    
+
 </body>
+
 </html>
