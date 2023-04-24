@@ -92,7 +92,6 @@ def page2():
             print(response.text)
             data = json.loads(response.text)
             if response.ok:
-                print("ok")
                 return render_template('1G-POE.html', option_1G=option_1G, predict_date=predict_date, predict_data=data,message='計算完成')
             else:
                 return render_template('1G-POE.html',predict_data={})

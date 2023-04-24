@@ -27,13 +27,12 @@
         </div>
     </div>
     <!-- 下拉選單和日期選擇器 -->
-    <div class="row mt-3">
+    <!-- <div class="row mt-3">
       <form method="POST" action="{{url_for('finished')}}">
-        <div class="col-md-12">
           <div class="form-group d-flex align-items-center justify-content-center">
             <div class="col-md-6">
               <label for="select1">料號選擇</label>
-              <div class="input-group">
+              <div class="form-group">
                 <select class="form-control" id="selected-option" name="finished_select_option">
                   <option value="1G-POE">1G-POE</option>
                   <option value="10G">10G</option>
@@ -42,7 +41,7 @@
             </div>
             <div class="col-md-6">
               <label for="datepicker">選擇日期</label>
-              <div class="input-group">
+              <div class="form-group">
                 <input type="text" class="form-control" id="datepicker" name="finished_date" placeholder="範例：YYYY-MM-DD">
                 <div class="input-group-append">
                   <button class="btn btn-primary" type="submit" name="finished_submit">搜尋</button>
@@ -50,11 +49,34 @@
               </div>
             </div>
           </div>
-        </div>
       </form>
-    </div>
+    </div> -->
     
-    
+    <form method="POST" action="{{url_for('finished')}}">
+      <div class="row mt-3">
+          <div class="col-md-6">
+              <div class="form-group">
+                <label for="select1">料號選擇</label>
+                <select class="form-control" id="selected-option" name="finished_select_option">
+                  <option value="1G-POE">1G-POE</option>
+                  <option value="10G">10G</option>
+                </select>
+              </div>
+
+          </div>
+          <!-- 右半部分 -->
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label for="datepicker">選擇日期</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="datepicker" name="finished_date" placeholder="範例：YYYY-MM-DD">
+                      <div class="input-group-append">
+                          <button class="btn btn-primary" type="submit" name="finished_submit">搜尋</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  </form>
         
       
       
