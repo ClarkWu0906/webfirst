@@ -2,92 +2,99 @@
 
 {% block title1 %} 機台狀態(上傳){% endblock %}
 {% block head %}
-<style>
-	#dropzone {
-		border: 2px dashed #ccc;
-		padding: 20px;
-		margin-top: 50px;
-		text-align: center;
-		font-size: 18px;
-		font-weight: bold;
-		color: #ccc;
-	}
-	#dropzone.highlight {
-		border-color: #66ccff;
-		color: #66ccff;
-	}
-</style>
-<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+<meta charset="UTF-8">
+    <title>拖曳上傳檔案</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+      }
+
+      #dropzone {
+        border: 4px dashed #ccc;
+        padding: 40px;
+        text-align: center;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease-in-out;
+        margin: 40px auto;
+        max-width: 400px;
+      }
+
+      #dropzone.hover {
+        border-color: #3d7efd;
+      }
+
+      #dropzone p {
+        font-size: 18px;
+        font-weight: bold;
+        color: #999;
+        margin: 0;
+        padding: 0;
+      }
+
+      #progress {
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #3d7efd;
+      }
+    </style>
 {% endblock %}
 {% block content %}
 <body>
-	<div class="row mt-3">
+    <div class="row mt-3">
         <div class="col-md-12">
-            <h1>機台狀態上傳</h1>
+            <h1>機台狀態(上傳)</h1>
         </div>
     </div>
-	<div class="container">
-		<div id="dropzone">拖曳檔案到這裡上傳</div>
-		<div id="progress"></div>
-		<div id="message"></div>
-	</div>
-	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
-	<script>
-		var dropzone = $('#dropzone');
-		var progress = $('#progress');
-		var message = $('#message');
+    <div id="dropzone">
+      <p>將檔案拖曳至此處上傳</p>
+    </div>
+    <div id="progress"></div>
+    <script>
+      var dropzone = document.getElementById('dropzone');
+      var progress = document.getElementById('progress');
 
-		// 防止瀏覽器預設的拖曳事件
-		$(document).on('dragenter', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.addClass('highlight');
-		});
-		$(document).on('dragover', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.addClass('highlight');
-		});
-		$(document).on('dragleave', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.removeClass('highlight');
-		});
+      dropzone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('hover');
+      });
 
-		// 拖曳上傳檔案
-		dropzone.on('drop', function(e) {
-			e.stopPropagation();
-			e.preventDefault();
-			dropzone.removeClass('highlight');
-			var files = e.originalEvent.dataTransfer.files;
-			var formData = new FormData();
-			for (var i = 0; i < files.length; i++) {
-				formData.append('file', files[i], files[i].name);
-			}
+      dropzone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('hover');
+      });
 
-			// 透過 AJAX 上傳檔案
-			$.ajax({
-				url: '/upload',
-				type: 'POST',
-				data: formData,
-				processData: false,
-				contentType: false,
-				xhr: function() {
-					var xhr = $.ajaxSettings.xhr();
-					if (xhr.upload) {
-						xhr.upload.addEventListener('progress', function(e) {
-							var percent = Math.round((e.loaded / e.total) * 100);
-							progress.html(percent + '%');
-						}, false);
-					}
-					return xhr;
-				},
-				success: function(data) {
-					message.html(data);
-				}
-			});
-		});
+      dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('hover');
 
-	</script>
+        var files = e.dataTransfer.files;
+        var xhr = new XMLHttpRequest();
+
+        xhr.upload.addEventListener('progress', function(e) {
+          var percent = Math.round((e.loaded / e.total) * 100);
+          progress.innerHTML = percent + '%';
+        });
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            progress.innerHTML = '上傳完成！';
+          }
+        };
+
+        xhr.open('POST', '/upload');
+        var formData = new FormData();
+
+        for (var i = 0; i < files.length; i++) {
+          formData.append('file', files[i]);
+        }
+
+        xhr.send(formData);
+      });
+    </script>
+  </body>
+
 {% endblock %}

@@ -245,19 +245,19 @@
                 </style>
                 <tr class="red-text">
                     <td>{{ value["id"] }}</td>
-                    <td>{{ value["need_date"] }}</td>
+                    <td>{{ value["order_date"] }}</td>
                     <td>{{ value["type"] }}</td>
                     <td>{{ value["number"] }}</td>
-                    <td>{{ value["order_date"] }}</td>
+                    <td>{{ value["need_date"] }}</td>
                     <td>{{ value["delivery_date"] }}</td>
                 </tr>
                 {% elif "id" in value %}
                 <tr>
                     <td>{{ value["id"] }}</td>
-                    <td>{{ value["need_date"] }}</td>
+                    <td>{{ value["order_date"] }}</td>
                     <td>{{ value["type"] }}</td>
                     <td>{{ value["number"] }}</td>
-                    <td>{{ value["order_date"] }}</td>
+                    <td>{{ value["need_date"] }}</td>
                     <td>{{ value["delivery_date"] }}</td>
                 </tr>
                 {% endif %}
